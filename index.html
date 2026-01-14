@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slava_Gusak - Музыка</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #d4d4d4;
+            min-height: 100vh;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            animation: fadeIn 1.2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 60px;
+        }
+
+        h1 {
+            font-size: 4em;
+            font-weight: 200;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 20px rgba(0, 0, 0, 0.7);
+            background: linear-gradient(120deg, #ffffff, #a8a8a8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #888;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 60px;
+        }
+
+        .bio-text {
+            font-size: 1.3em;
+            line-height: 1.9;
+            color: #9a9a9a;
+            font-style: italic;
+            text-align: center;
+            margin: 60px auto;
+            max-width: 600px;
+            font-weight: 300;
+        }
+
+        .tracks {
+            margin: 80px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .track-item {
+            opacity: 0;
+            animation: slideIn 0.8s ease forwards;
+        }
+
+        .track-item:nth-child(1) { animation-delay: 0.2s; }
+        .track-item:nth-child(2) { animation-delay: 0.4s; }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .track-title {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #b8b8b8;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        iframe {
+            border-radius: 12px;
+            width: 100%;
+            filter: brightness(0.9);
+            transition: filter 0.3s ease;
+        }
+
+        iframe:hover {
+            filter: brightness(1);
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 100px 0 60px;
+        }
+
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 30px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            color: #c8c8c8;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            font-size: 1em;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .link-btn:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        .link-btn svg {
+            width: 22px;
+            height: 22px;
+            opacity: 0.8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px 20px 40px;
+            color: #5a5a5a;
+            font-size: 0.85em;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .divider {
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            margin: 60px auto;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8em;
+                letter-spacing: 4px;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .bio-text {
+                font-size: 1.1em;
+            }
+
+            header {
+                padding: 60px 20px 40px;
+            }
+
+            .links {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .link-btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Slava_Gusak</h1>
+            <p class="subtitle">В поисках своего звучания</p>
+        </header>
+
+        <p class="bio-text">Когда-нибудь это здесь появится</p>
+
+        <div class="divider"></div>
+
+        <div class="tracks">
+            <div class="track-item">
+                <div class="track-title">Somewhere in the Forest</div>
+                <iframe src="https://open.spotify.com/embed/track/4PWKtbQdZUbF4rOYuJvBRQ?utm_source=generator" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+
+            <div class="track-item">
+                <div class="track-title">Мёд</div>
+                <iframe src="https://open.spotify.com/embed/track/3L8SwOLP8wvXuCLxrorPxC?utm_source=generator" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="links">
+            <a href="https://open.spotify.com/artist/7sT15ts0VGL00oqbmRGT7L" class="link-btn" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                </svg>
+                Spotify
+            </a>
+            
+            <a href="https://vk.com/slava_gusak" class="link-btn" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.711 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.491-.085.744-.576.744z"/>
+                </svg>
+                VK
+            </a>
+        </div>
+
+        <footer>
+            <p>© 2025 Slava_Gusak</p>
+        </footer>
+    </div>
+</body>
+</html>
