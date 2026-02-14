@@ -18,12 +18,92 @@
             min-height: 100vh;
             padding: 40px 20px;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Градиентный слой на весь экран */
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 400px;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                rgba(0, 0, 0, 0.3) 30%,
+                rgba(0, 0, 0, 0.6) 60%,
+                rgba(0, 0, 0, 0.9) 100%);
+            opacity: 0;
+            transition: opacity 1s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body.gradient-active::after {
+            opacity: 1;
         }
 
         .container {
             max-width: 850px;
             margin: 0 auto;
             animation: fadeIn 1.2s ease-in;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Переключатель языка */
+        .lang-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            padding: 8px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 300;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .lang-btn:hover:not(.transitioning) {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .lang-btn.transitioning {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Анимация затемнения */
+        @keyframes fadeToBlack {
+            0% {
+                opacity: 1;
+                filter: brightness(1);
+            }
+            50% {
+                opacity: 0.3;
+                filter: brightness(0.3);
+            }
+            100% {
+                opacity: 1;
+                filter: brightness(1);
+            }
+        }
+
+        .lang-btn.transitioning {
+            animation: fadeToBlack 0.6s ease-in-out;
         }
 
         @keyframes fadeIn {
@@ -71,16 +151,17 @@
             margin: 80px 0;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 50px;
         }
 
-        .track-item {
+        .track-wrapper {
+            position: relative;
             opacity: 0;
             animation: slideIn 0.8s ease forwards;
         }
 
-        .track-item:nth-child(1) { animation-delay: 0.2s; }
-        .track-item:nth-child(2) { animation-delay: 0.4s; }
+        .track-wrapper:nth-child(1) { animation-delay: 0.2s; }
+        .track-wrapper:nth-child(2) { animation-delay: 0.4s; }
 
         @keyframes slideIn {
             from {
@@ -93,6 +174,105 @@
             }
         }
 
+        /* Градиентный слой за виджетом */
+        .track-gradient-layer {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border-radius: 30px;
+            z-index: 1;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Первый трек - коричневый */
+        .track-wrapper:nth-child(1) .track-gradient-layer {
+            background: linear-gradient(135deg, 
+                rgba(111, 65, 0, 0.35) 0%,
+                rgba(111, 65, 0, 0.15) 50%,
+                transparent 100%);
+            box-shadow: 
+                0 10px 40px rgba(111, 65, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        /* Второй трек - синий */
+        .track-wrapper:nth-child(2) .track-gradient-layer {
+            background: linear-gradient(135deg, 
+                rgba(30, 78, 130, 0.35) 0%,
+                rgba(30, 78, 130, 0.15) 50%,
+                transparent 100%);
+            box-shadow: 
+                0 10px 40px rgba(30, 78, 130, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        /* Стеклянный контейнер */
+        .track-item {
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            padding: 25px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Первый трек - тёмно-коричневое стекло */
+        .track-wrapper:nth-child(1) .track-item {
+            background: rgba(70, 40, 0, 0.15);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        /* Второй трек - тёмно-синее стекло */
+        .track-wrapper:nth-child(2) .track-item {
+            background: rgba(20, 50, 80, 0.15);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .track-wrapper:hover .track-gradient-layer {
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+        }
+
+        .track-wrapper:nth-child(1):hover .track-gradient-layer {
+            box-shadow: 
+                0 15px 60px rgba(111, 65, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .track-wrapper:nth-child(2):hover .track-gradient-layer {
+            box-shadow: 
+                0 15px 60px rgba(30, 78, 130, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .track-wrapper:hover .track-item {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .track-wrapper:nth-child(1):hover .track-item {
+            box-shadow: 
+                0 12px 48px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .track-wrapper:nth-child(2):hover .track-item {
+            box-shadow: 
+                0 12px 48px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+        }
+
         .track-title {
             font-size: 1.1em;
             margin-bottom: 15px;
@@ -102,8 +282,10 @@
         }
 
         iframe {
-            border-radius: 12px;
+            border-radius: 15px;
             width: 100%;
+            border: none;
+            display: block;
             filter: brightness(0.9);
             transition: filter 0.3s ease;
         }
@@ -117,45 +299,301 @@
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
-            margin: 100px 0 60px;
+        }
+
+        /* Первая группа - Spotify, Яндекс.Музыка, VK Музыка */
+        .primary-links {
+            margin: 100px 0 30px;
+        }
+
+        /* Вторая группа - VK и Почта */
+        .tertiary-links {
+            margin: 20px 0 60px;
+            gap: 20px;
         }
 
         .link-btn {
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            padding: 14px 30px;
+            padding: 18px 36px;
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            border-radius: 60px;
             color: #c8c8c8;
             text-decoration: none;
-            transition: all 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 1em;
-            font-weight: 300;
-            letter-spacing: 1px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
-        .link-btn:hover {
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-2px);
+        /* Градиентная заливка снизу вверх */
+        .link-btn::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            z-index: -1;
+            transition: height 0.8s cubic-bezier(0.2, 0, 0.3, 1);
+        }
+
+        /* Светящийся эффект */
+        .link-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            z-index: -2;
+            transition: opacity 0.6s ease;
+        }
+
+
+        .link-btn:hover::before {
+            height: 100%;
+            transition: height 0.8s cubic-bezier(0.2, 0, 0.3, 1) 0.15s;
+        }
+
+        .link-btn:hover::after {
+            opacity: 1;
+        }
+
+        /* Первая группа - Spotify */
+        .primary-links .link-btn:nth-child(1)::before {
+            background: linear-gradient(to top, rgba(61, 90, 79, 0.8), rgba(61, 90, 79, 0.2));
+        }
+
+        .primary-links .link-btn:nth-child(1)::after {
+            background: radial-gradient(circle at center, rgba(93, 212, 163, 0.3), transparent 70%);
+            box-shadow: inset 0 0 30px rgba(93, 212, 163, 0.6), inset 0 0 15px rgba(93, 212, 163, 0.8);
+        }
+
+        .primary-links .link-btn:nth-child(1):hover {
+            background: rgba(61, 90, 79, 0.15);
+            border-color: rgba(61, 90, 79, 0.5);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 
+                0 8px 32px rgba(61, 90, 79, 0.4),
+                0 0 40px rgba(61, 90, 79, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
             color: #ffffff;
         }
+
+        /* Первая группа - Яндекс.Музыка */
+        .primary-links .link-btn:nth-child(2)::before {
+            background: linear-gradient(to top, rgba(180, 120, 30, 0.8), rgba(180, 120, 30, 0.2));
+        }
+
+        .primary-links .link-btn:nth-child(2)::after {
+            background: radial-gradient(circle at center, rgba(255, 215, 100, 0.4), transparent 70%);
+            box-shadow: inset 0 0 30px rgba(255, 215, 100, 0.7), inset 0 0 15px rgba(255, 215, 100, 0.9);
+        }
+
+        .primary-links .link-btn:nth-child(2):hover {
+            background: rgba(180, 120, 30, 0.2);
+            border-color: rgba(255, 215, 100, 0.6);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 
+                0 8px 32px rgba(255, 215, 100, 0.5),
+                0 0 40px rgba(255, 215, 100, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        /* Первая группа - VK Музыка */
+        .primary-links .link-btn:nth-child(3)::before {
+            background: linear-gradient(to top, rgba(30, 50, 90, 0.8), rgba(30, 50, 90, 0.2));
+        }
+
+        .primary-links .link-btn:nth-child(3)::after {
+            background: radial-gradient(circle at center, rgba(71, 126, 232, 0.3), transparent 70%);
+            box-shadow: inset 0 0 30px rgba(71, 126, 232, 0.6), inset 0 0 15px rgba(71, 126, 232, 0.8);
+        }
+
+        .primary-links .link-btn:nth-child(3):hover {
+            background: rgba(30, 50, 90, 0.15);
+            border-color: rgba(71, 126, 232, 0.5);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 
+                0 8px 32px rgba(71, 126, 232, 0.4),
+                0 0 40px rgba(71, 126, 232, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        /* Вторая группа - VK */
+        .tertiary-links .link-btn:nth-child(1)::before {
+            background: linear-gradient(to top, rgba(37, 85, 101, 0.8), rgba(37, 85, 101, 0.2));
+        }
+
+        .tertiary-links .link-btn:nth-child(1)::after {
+            background: radial-gradient(circle at center, rgba(74, 200, 232, 0.3), transparent 70%);
+            box-shadow: inset 0 0 30px rgba(74, 200, 232, 0.6), inset 0 0 15px rgba(74, 200, 232, 0.8);
+        }
+
+        .tertiary-links .link-btn:nth-child(1):hover {
+            background: rgba(37, 85, 101, 0.15);
+            border-color: rgba(37, 85, 101, 0.5);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 
+                0 8px 32px rgba(37, 85, 101, 0.4),
+                0 0 40px rgba(37, 85, 101, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        /* Третья группа - Почта */
+        .tertiary-links .link-btn:nth-child(2)::before {
+            background: linear-gradient(to top, rgba(103, 58, 183, 0.8), rgba(103, 58, 183, 0.2));
+        }
+
+        .tertiary-links .link-btn:nth-child(2)::after {
+            background: radial-gradient(circle at center, rgba(149, 117, 205, 0.3), transparent 70%);
+            box-shadow: inset 0 0 30px rgba(149, 117, 205, 0.6), inset 0 0 15px rgba(149, 117, 205, 0.8);
+        }
+
+        .tertiary-links .link-btn:nth-child(2):hover {
+            background: rgba(103, 58, 183, 0.15);
+            border-color: rgba(103, 58, 183, 0.5);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 
+                0 8px 32px rgba(103, 58, 183, 0.4),
+                0 0 40px rgba(103, 58, 183, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
 
         .link-btn svg {
             width: 22px;
             height: 22px;
             opacity: 0.8;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+            transition: opacity 0.3s ease;
+        }
+
+        .link-btn:hover svg {
+            opacity: 1;
+        }
+
+        /* Секция для сотрудничества */
+        .collaboration-label {
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+            font-weight: 300;
+            text-transform: uppercase;
         }
 
         footer {
             text-align: center;
-            padding: 60px 20px 40px;
+            padding: 60px 20px 80px;
             color: #5a5a5a;
             font-size: 0.85em;
             font-weight: 300;
             letter-spacing: 1px;
+            position: relative;
+            margin: 0;
+        }
+
+        .copyright {
+            cursor: pointer;
+            display: inline-block;
+            transition: color 0.3s ease;
+            user-select: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .copyright:hover {
+            color: #888;
+        }
+
+        .hidden-socials {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s ease,
+                margin-top 0.5s ease;
+            opacity: 0;
+            margin-top: 0;
+        }
+
+        .hidden-socials.show {
+            max-height: 100px;
+            opacity: 1;
+            margin-top: 30px;
+        }
+
+        .social-links-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .social-link:nth-child(1)::before {
+            background: radial-gradient(circle, rgba(29, 161, 242, 0.3), transparent 70%);
+        }
+
+        .social-link:nth-child(2)::before {
+            background: radial-gradient(circle, rgba(0, 136, 204, 0.3), transparent 70%);
+        }
+
+        .social-link:hover::before {
+            opacity: 1;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px) scale(1.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+            fill: #c8c8c8;
+            transition: fill 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-link:hover svg {
+            fill: #ffffff;
         }
 
         .divider {
@@ -163,6 +601,22 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             margin: 60px auto;
+        }
+
+        /* Эффект декодирования текста */
+        @keyframes glitchChar {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .decoding {
+            display: inline-block;
+            position: relative;
+        }
+
+        .decoding-char {
+            display: inline-block;
+            animation: glitchChar 0.1s ease-in-out;
         }
 
         @media (max-width: 768px) {
@@ -183,6 +637,13 @@
                 padding: 60px 20px 40px;
             }
 
+            .lang-btn {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 100;
+            }
+
             .links {
                 flex-direction: column;
                 align-items: stretch;
@@ -191,53 +652,199 @@
             .link-btn {
                 justify-content: center;
             }
+
+            .track-item,
+            .track-gradient-layer {
+                border-radius: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <button class="lang-btn" id="langBtn" onclick="switchLanguage()">EN</button>
+        
         <header>
             <h1>Slava_Gusak</h1>
-            <p class="subtitle">В поисках своего звучания</p>
+            <p class="subtitle" data-ru="В поисках своего звучания" data-en="Searching for my sound">В поисках своего звучания</p>
         </header>
 
-        <p class="bio-text">Когда-нибудь это здесь появится</p>
+        <p class="bio-text" data-ru="Играю в игры, пишу музыку... Что ещё надо для счастья?" data-en="Playing games, making music... What else do you need for happiness?">Играю в игры, пишу музыку... Что ещё надо для счастья?</p>
 
         <div class="divider"></div>
 
         <div class="tracks">
-            <div class="track-item">
-                <div class="track-title">Somewhere in the Forest</div>
-                <iframe src="https://open.spotify.com/embed/track/4PWKtbQdZUbF4rOYuJvBRQ?utm_source=generator" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <div class="track-wrapper">
+                <div class="track-gradient-layer"></div>
+                <div class="track-item">
+                    <iframe src="https://open.spotify.com/embed/track/4PWKtbQdZUbF4rOYuJvBRQ?utm_source=generator" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
             </div>
 
-            <div class="track-item">
-                <div class="track-title">Мёд</div>
-                <iframe src="https://open.spotify.com/embed/track/3L8SwOLP8wvXuCLxrorPxC?utm_source=generator" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <div class="track-wrapper">
+                <div class="track-gradient-layer"></div>
+                <div class="track-item">
+                    <iframe src="https://open.spotify.com/embed/track/3L8SwOLP8wvXuCLxrorPxC?utm_source=generator" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
             </div>
         </div>
 
         <div class="divider"></div>
 
-        <div class="links">
+        <p class="collaboration-label" data-ru="Открыт для сотрудничества" data-en="Open for collaboration">Открыт для сотрудничества</p>
+
+        <div class="links primary-links">
             <a href="https://open.spotify.com/artist/7sT15ts0VGL00oqbmRGT7L" class="link-btn" target="_blank">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
                 </svg>
                 Spotify
             </a>
+
+            <a href="https://music.yandex.ru/artist/23144943" class="link-btn" target="_blank">
+                <svg viewBox="0 0 40.1252 40" fill="currentColor">
+                    <path d="M39.759 15.5909L39.6498 14.7848L33.0533 13.2431L36.4607 8.18079L36.0581 7.63197L30.7445 10.2348L31.3313 3.15494L30.7445 2.86345L27.4462 8.54742L23.5633 0.000976562H22.8309L23.7817 8.36524L14.0711 0.624937L13.2295 0.845829L20.7041 10.2348L5.8641 5.28415L5.16805 6.05385L18.4317 13.5733L0.184248 15.115L0 16.2149L18.9821 18.2689L3.1163 31.256L3.84875 32.2465L22.6466 21.974L18.9457 39.9869H20.0808L27.337 23.0397L31.7339 36.2818L32.5028 35.6943L30.8536 22.4157L37.5594 30.008L37.9643 29.2383L32.9805 19.847L40.0524 22.3429L40.1252 21.5709L34.227 16.8388L39.759 15.5909Z"/>
+                </svg>
+                <span data-ru="Яндекс.Музыка" data-en="Yandex Music">Яндекс.Музыка</span>
+            </a>
             
+            <a href="https://vk.com/artist/slava_gusak" class="link-btn" target="_blank">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M 7.92 2 c -0.88 0 -1.6 0 -2.17 0.05 a 4.1 4.1 0 0 0 -1.57 0.39 a 4 4 0 0 0 -1.74 1.74 a 4.1 4.1 0 0 0 -0.4 1.57 C 2 6.33 2 7.04 2 7.92 v 4.16 c 0 0.88 0 1.6 0.05 2.17 c 0.04 0.58 0.15 1.1 0.39 1.57 a 4 4 0 0 0 1.74 1.74 c 0.48 0.24 0.99 0.35 1.57 0.4 c 0.58 0.04 1.29 0.04 2.17 0.04 h 4.16 c 0.88 0 1.6 0 2.17 -0.05 a 4.1 4.1 0 0 0 1.57 -0.39 a 4 4 0 0 0 1.74 -1.74 c 0.24 -0.47 0.35 -0.99 0.4 -1.57 c 0.04 -0.58 0.04 -1.29 0.04 -2.17 V 7.92 c 0 -0.88 0 -1.6 -0.05 -2.17 a 4.1 4.1 0 0 0 -0.39 -1.57 a 4 4 0 0 0 -1.74 -1.74 a 4.1 4.1 0 0 0 -1.57 -0.4 C 13.67 2 12.96 2 12.08 2 H 7.92 Z M 4.87 3.77 c 0.22 -0.11 0.51 -0.19 1 -0.23 c 0.51 -0.04 1.16 -0.04 2.08 -0.04 h 4.1 c 0.92 0 1.57 0 2.07 0.04 c 0.5 0.04 0.8 0.12 1.02 0.23 a 2.5 2.5 0 0 1 1.09 1.1 c 0.11 0.22 0.19 0.51 0.23 1 c 0.03 0.42 0.04 0.93 0.04 1.6 c -0.38 -0.28 -0.85 -0.6 -1.35 -0.9 c -1.04 -0.65 -2.4 -1.32 -3.65 -1.32 c -1.43 0 -2.53 0.64 -3.54 1.23 l -0.42 0.25 A 8.5 8.5 0 0 1 3.5 7.99 v -0.04 c 0 -0.92 0 -1.57 0.04 -2.07 c 0.04 -0.5 0.12 -0.8 0.23 -1.01 a 2.5 2.5 0 0 1 1.1 -1.1 Z M 3.5 9.5 v 2.55 c 0 0.92 0 1.57 0.04 2.07 c 0.04 0.5 0.12 0.8 0.23 1.02 a 2.5 2.5 0 0 0 1.1 1.09 c 0.22 0.11 0.51 0.19 1 0.23 c 0.51 0.04 1.16 0.04 2.08 0.04 h 4.1 c 0.92 0 1.57 0 2.07 -0.04 c 0.5 -0.04 0.8 -0.12 1.02 -0.23 a 2.5 2.5 0 0 0 1.09 -1.1 c 0.11 -0.22 0.19 -0.51 0.23 -1 c 0.04 -0.51 0.04 -1.16 0.04 -2.08 V 9.36 a 30.58 30.58 0 0 1 -0.17 -0.13 c -0.43 -0.33 -1.14 -0.88 -1.96 -1.39 a 6.19 6.19 0 0 0 -2.87 -1.09 c -1 0 -1.73 0.42 -2.77 1.02 a 70.79 70.79 0 0 1 -0.45 0.26 A 9.97 9.97 0 0 1 3.5 9.5 Z M5.5 11a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-.75.75.75.75 0 0 1-.75-.75v-1A.75.75 0 0 1 5.5 11Zm3.75-.25a.75.75 0 0 0-1.5 0v2.75a.75.75 0 0 0 1.5 0v-2.75ZM14.5 10a.75.75 0 0 1 .75.76v2.8a.75.75 0 0 1-1.5-.01v-2.8a.75.75 0 0 1 .75-.75Zm-2.25-.74a.75.75 0 0 0-1.5 0v4.5a.75.75 0 0 0 1.5 0v-4.5Z"/>
+                </svg>
+                <span data-ru="VK Музыка" data-en="VK Music">VK Музыка</span>
+            </a>
+        </div>
+
+        <div class="links tertiary-links">
             <a href="https://vk.com/slava_gusak" class="link-btn" target="_blank">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.711 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.491-.085.744-.576.744z"/>
                 </svg>
                 VK
             </a>
+
+            <a href="mailto:slava.gusak.yup@gmail.com" class="link-btn" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                <span data-ru="Почта" data-en="Email">Почта</span>
+            </a>
         </div>
 
         <footer>
-            <p>© 2025 Slava_Gusak</p>
+            <p class="copyright" onclick="toggleHiddenSocials()">© 2025 Slava_Gusak</p>
+            
+            <div class="hidden-socials" id="hiddenSocials">
+                <div class="social-links-row">
+                    <a href="https://twitter.com/GooseSvyatoslav" class="social-link" target="_blank" title="Twitter">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                    <a href="https://t.me/Slava_Geese" class="social-link" target="_blank" title="Telegram">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.654-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
         </footer>
     </div>
+
+    <script>
+        let clickCount = 0;
+        let clickTimer = null;
+        let currentLang = 'ru'; // Изначально русский
+
+        // Символы Standard Galactic Alphabet
+        const galacticChars = ['ᔑ', 'ʖ', 'ᓵ', 'ᓭ', 'ᒷ', 'リ', '⊣', '⍑', 'ᒲ', 'リ', '𝙹', '!¡', 'ᑑ', '∷', 'ᓭ', 'ℸ', '⚍', '⍊', '∴', 'ℸ', '||', '⨅'];
+
+        function getRandomGalacticChar() {
+            return galacticChars[Math.floor(Math.random() * galacticChars.length)];
+        }
+
+        function decodeText(element, finalText, duration = 800) {
+            const textLength = finalText.length;
+            const iterations = 15;
+            const iterationDelay = duration / iterations;
+            let currentIteration = 0;
+
+            const interval = setInterval(() => {
+                let newText = '';
+                const progress = currentIteration / iterations;
+                
+                for (let i = 0; i < textLength; i++) {
+                    const charProgress = i / textLength;
+                    
+                    if (charProgress < progress) {
+                        newText += finalText[i];
+                    } else {
+                        if (finalText[i] !== ' ') {
+                            newText += getRandomGalacticChar();
+                        } else {
+                            newText += ' ';
+                        }
+                    }
+                }
+                
+                element.textContent = newText;
+                currentIteration++;
+                
+                if (currentIteration > iterations) {
+                    clearInterval(interval);
+                    element.textContent = finalText;
+                }
+            }, iterationDelay);
+        }
+
+        function toggleHiddenSocials() {
+            clickCount++;
+            
+            // Сбрасываем счётчик через 1 секунду, если кликов меньше 3
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 1000);
+
+            // Если кликнули 3 раза
+            if (clickCount === 3) {
+                const hiddenSocials = document.getElementById('hiddenSocials');
+                const body = document.body;
+                
+                hiddenSocials.classList.toggle('show');
+                body.classList.toggle('gradient-active');
+                
+                clickCount = 0;
+            }
+        }
+
+        function switchLanguage() {
+            const langBtn = document.getElementById('langBtn');
+            
+            langBtn.classList.add('transitioning');
+            const newLang = currentLang === 'ru' ? 'en' : 'ru';
+            
+            setTimeout(() => {
+                langBtn.textContent = newLang === 'ru' ? 'EN' : 'RU';
+            }, 300);
+            
+            setTimeout(() => {
+                document.querySelectorAll('[data-ru][data-en]').forEach(element => {
+                    const finalText = newLang === 'ru' 
+                        ? element.getAttribute('data-ru') 
+                        : element.getAttribute('data-en');
+                    
+                    decodeText(element, finalText, 800);
+                });
+                
+                currentLang = newLang;
+            }, 300);
+            
+            setTimeout(() => {
+                langBtn.classList.remove('transitioning');
+            }, 1200);
+        }
+    </script>
 </body>
 </html>
