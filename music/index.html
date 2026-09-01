@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slava_Gusak - Музыка</title>
+    <link rel="preload" as="image" href="img/ftl.avif" fetchpriority="high">
     <style>
         :root {
             --track-1-bg:    rgba(12, 5, 1, 0.3);
@@ -15,40 +16,50 @@
             --track-3-bg:    rgba(20, 50, 80, 0.15);
             --track-3-layer: rgba(30, 78, 130, 0.35);
             --track-3-glow:  rgba(30, 78, 130, 0.5);
-            --btn-spotify-fill:  rgba(61,90,79,0.8);   --btn-spotify-glow:  rgba(93,212,163,0.3);  --btn-spotify-hover: rgba(61,90,79,0.15);  --btn-spotify-bord: rgba(61,90,79,0.5);   --btn-spotify-shad: rgba(61,90,79,0.4);
+            --btn-spotify-fill:  rgba(29,185,84,0.8);   --btn-spotify-glow:  rgba(29,185,84,0.2);  --btn-spotify-hover: rgba(29,185,84,0.07);  --btn-spotify-bord: rgba(29,185,84,0.5);   --btn-spotify-shad: rgba(29,185,84,0.3);
             --btn-yandex-fill:   rgba(180,120,30,0.8); --btn-yandex-glow:   rgba(255,215,100,0.4); --btn-yandex-hover:  rgba(180,120,30,0.2); --btn-yandex-bord:  rgba(255,215,100,0.6); --btn-yandex-shad:  rgba(255,215,100,0.5);
             --btn-vk-fill:       rgba(30,50,90,0.8);   --btn-vk-glow:       rgba(71,126,232,0.3);  --btn-vk-hover:      rgba(30,50,90,0.15);  --btn-vk-bord:      rgba(71,126,232,0.5);  --btn-vk-shad:      rgba(71,126,232,0.4);
             --track-4-bg:    rgba(18, 30, 5, 0.2);
             --track-4-layer: rgba(90, 140, 25, 0.32);
             --track-4-glow:  rgba(140, 195, 50, 0.55);
         }
-        html { background:#0f0f23; overscroll-behavior:none; }
+        html { background:#03040c; overscroll-behavior:none; }
         * { margin:0; padding:0; box-sizing:border-box; }
+        body::before {
+            content:''; position:fixed; inset:0; z-index:0;
+            background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+            background-size:200px 200px; opacity:0.04; pointer-events:none;
+        }
+        .glow-orb { position:fixed; border-radius:50%; filter:blur(90px); opacity:0; pointer-events:none; z-index:0; }
+        .glow-orb-1 { width:clamp(260px,55vw,550px); height:clamp(260px,55vw,550px); top:-120px; right:-100px; }
+        .glow-orb-2 { width:clamp(210px,45vw,450px); height:clamp(210px,45vw,450px); bottom:-100px; left:-80px; }
+        @media (max-width:768px) {
+            .glow-orb { filter:blur(90px) brightness(0.5); }
+        }
         body {
             font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-            background:linear-gradient(135deg,#0f0f23 0%,#1a1a2e 50%,#16213e 100%);
-            color:#d4d4d4; min-height:100vh; padding:40px 20px;
+            background:#03040c;
+            color:#d4d4d4; min-height:100vh;
             overflow-x:hidden; position:relative; overscroll-behavior:none;
         }
         body::after {
             content:''; position:fixed; bottom:0; left:0; right:0; height:400px;
-            background:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,0.3) 30%,rgba(0,0,0,0.6) 60%,rgba(0,0,0,0.9) 100%);
+            background:linear-gradient(to bottom,transparent 0%,rgba(0,4,18,0.25) 30%,rgba(0,6,24,0.55) 60%,rgba(0,8,28,0.88) 100%);
             opacity:0; transition:opacity 1s ease; pointer-events:none; z-index:0;
         }
         body.gradient-active::after { opacity:1; }
-        .container { max-width:850px; margin:0 auto; animation:fadeIn 1.2s ease-in; position:relative; z-index:1; }
+        .container { max-width:850px; margin:0 auto; padding:40px 20px; position:relative; z-index:1; }
 
-        /* МЕНЮ */
         .menu-btn {
             position:fixed; top:20px; right:20px; z-index:100;
             backdrop-filter:blur(40px) saturate(200%); -webkit-backdrop-filter:blur(40px) saturate(200%);
-            background:rgba(255,255,255,0.05); border:2px solid rgba(255,255,255,0.08);
+            background:rgba(255,255,255,0.07); border:2px solid rgba(255,255,255,0.1);
             color:#fff; width:60px; height:36px; padding:0; border-radius:15px; cursor:pointer;
             display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px;
             transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
-            box-shadow:0 4px 16px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);
+            box-shadow:0 4px 16px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.07);
         }
-        .menu-btn:hover { border-color:rgba(255,255,255,0.15); background:rgba(255,255,255,0.08); transform:scale(1.05); }
+        .menu-btn:hover { border-color:rgba(255,255,255,0.2); background:rgba(255,255,255,0.12); transform:scale(1.05); }
         .menu-btn span { width:20px; height:2px; background:#fff; border-radius:2px; transition:all 0.3s cubic-bezier(0.4,0,0.2,1); opacity:0.8; }
         .menu-btn.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
         .menu-btn.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
@@ -57,13 +68,13 @@
         .lang-btn {
             position:fixed; top:calc(20px + 36px + 8px); right:20px; z-index:100;
             backdrop-filter:blur(40px) saturate(200%); -webkit-backdrop-filter:blur(40px) saturate(200%);
-            background:rgba(255,255,255,0.05); border:2px solid rgba(255,255,255,0.08);
+            background:rgba(255,255,255,0.07); border:2px solid rgba(255,255,255,0.1);
             color:#fff; width:60px; height:36px; padding:0; border-radius:15px; cursor:pointer;
             font-size:0.85em; font-weight:300; letter-spacing:1px;
             transition:all 0.3s cubic-bezier(0.4,0,0.2,1); text-transform:uppercase;
-            box-shadow:0 4px 16px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);
+            box-shadow:0 4px 16px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.07);
         }
-        .lang-btn:hover:not(.transitioning) { border-color:rgba(255,255,255,0.15); transform:scale(1.05); background:rgba(255,255,255,0.08); }
+        .lang-btn:hover:not(.transitioning) { border-color:rgba(255,255,255,0.2); transform:scale(1.05); background:rgba(255,255,255,0.12); }
         .lang-btn.transitioning { cursor:not-allowed; pointer-events:none; animation:fadeToBlack 0.6s ease-in-out; }
 
         .menu-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:98; opacity:0; visibility:hidden; transition:all 0.3s ease; }
@@ -71,8 +82,8 @@
         .menu {
             position:fixed; top:-100%; left:0; width:100%;
             backdrop-filter:blur(40px) saturate(200%); -webkit-backdrop-filter:blur(40px) saturate(200%);
-            background:rgba(15,15,35,0.85); border-bottom:1px solid rgba(255,255,255,0.08);
-            box-shadow:0 8px 32px rgba(0,0,0,0.4); z-index:99;
+            background:rgba(3,5,20,0.92); border-bottom:1px solid rgba(255,255,255,0.08);
+            box-shadow:0 8px 32px rgba(0,0,0,0.5); z-index:99;
             transition:top 0.4s cubic-bezier(0.4,0,0.2,1); padding:28px 40px 30px;
         }
         .menu.active { top:0; }
@@ -80,37 +91,51 @@
         .menu-items a { font-size:1.4em; font-weight:300; letter-spacing:3px; color:#c8c8c8; text-decoration:none; text-transform:uppercase; transition:color 0.3s ease; position:relative; }
         .menu-items a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:rgba(255,255,255,0.4); transition:width 0.3s ease; }
         .menu-items a:hover { color:#fff; }
-        .menu-items a:hover::after { width:100%; }
+        .menu-items a:hover::after { width:calc(100% - 3px); }
         .menu-items a.active { color:#fff; }
-        .menu-items a.active::after { width:100%; background:rgba(255,255,255,0.6); }
+        .menu-items a.active::after { width:calc(100% - 3px); background:rgba(255,255,255,0.6); }
         .menu-item-soon { position:relative; display:flex; flex-direction:column; align-items:center; gap:4px; }
         .soon-link { cursor:default !important; opacity:0.5; }
         .soon-tag { font-size:0.55em; letter-spacing:2px; color:#666; text-transform:uppercase; font-weight:300; line-height:1; }
+        .menu-item-with-sub { position:relative; }
+        .menu-item-with-sub > a.no-underline::after { display:none; }
+        .submenu-link.submenu-link { position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:3px; font-size:0.62em; letter-spacing:1.5px; color:#777; text-transform:uppercase; font-weight:300; line-height:1; white-space:nowrap; text-decoration:none; opacity:0.65; transition:opacity 0.25s ease,color 0.25s ease; }
+        .menu-item-with-sub:hover .submenu-link:not(.soon-link),
+        .submenu-link:focus:not(.soon-link),
+        .submenu-link:hover:not(.soon-link) { opacity:1; color:#fff; }
+        .submenu-link.soon-link { opacity:0.5 !important; }
+
+        /* ДЕБРИ — секретное открытие */
+        .submenu-link.warren-link { display:none; pointer-events:none; }
+        .submenu-link.warren-link.revealed { display:block; pointer-events:auto; animation:warrenReveal 0.9s cubic-bezier(0.2,0,0.2,1) forwards; }
+        @keyframes warrenReveal { from{opacity:0;transform:translate(-50%,-6px)} to{opacity:0.65;transform:translate(-50%,0)} }
+        .warren-charging { animation:warrenShake 0.5s ease-in-out infinite; }
+        @keyframes warrenShake { 0%,100%{transform:translate(0,0)} 20%{transform:translate(-2px,1px)} 40%{transform:translate(2px,-1px)} 60%{transform:translate(-1px,-2px)} 80%{transform:translate(1px,2px)} }
+        .warren-glow { position:absolute; inset:-14px; border-radius:16px; pointer-events:none; z-index:-1; opacity:0; background:radial-gradient(circle,rgba(140,195,255,0.55),transparent 70%); filter:blur(6px); transition:opacity 0.1s linear; }
 
         @keyframes fadeToBlack { 0%,100%{opacity:1;filter:brightness(1)} 50%{opacity:0.3;filter:brightness(0.3)} }
-        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-        @keyframes slideIn { from{opacity:0;transform:translateX(-30px)} to{opacity:1;transform:translateX(0)} }
+        @keyframes cardMaterialize { from{filter:blur(18px);transform:scale(0.94) translateY(10px)} to{filter:blur(0);transform:scale(1) translateY(0)} }
         @keyframes shake { 0%,100%{transform:translateX(0)} 15%{transform:translateX(-6px)} 35%{transform:translateX(6px)} 55%{transform:translateX(-4px)} 75%{transform:translateX(4px)} 90%{transform:translateX(-2px)} }
         @keyframes glitchChar { 0%,100%{opacity:1} 50%{opacity:0.5} }
         .shaking { animation:shake 0.4s ease; }
 
-        header { text-align:center; padding:80px 20px 60px; }
-        h1 { font-size:4em; font-weight:200; letter-spacing:8px; margin-bottom:20px; text-shadow:3px 3px 20px rgba(0,0,0,0.7); background:linear-gradient(120deg,#ffffff,#a8a8a8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-        .subtitle { font-size:1.2em; color:#888; font-weight:300; letter-spacing:2px; margin-bottom:60px; }
-        .bio-text { font-size:1.3em; line-height:1.9; color:#9a9a9a; font-style:italic; text-align:center; margin:60px auto; max-width:600px; font-weight:300; }
+        header { text-align:center; padding:100px 20px 70px; }
+        h1 { font-size:4em; font-weight:200; letter-spacing:8px; margin-bottom:16px; background:linear-gradient(120deg,#ffffff,#a8a8a8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .subtitle { font-size:1.15em; color:rgba(100,160,255,0.4); font-weight:300; letter-spacing:3px; text-transform:uppercase; }
 
-        /* ТРЕКИ */
         .tracks { margin:80px 0; display:flex; flex-direction:column; gap:50px; }
-        .track-wrapper { position:relative; opacity:0; animation:slideIn 0.8s ease forwards; }
-        .track-wrapper:nth-child(1){animation-delay:0.2s}
-        .track-wrapper:nth-child(2){animation-delay:0.4s}
-        .track-wrapper:nth-child(3){animation-delay:0.6s}
-        .track-wrapper:nth-child(4){animation-delay:0.8s}
+        .track-wrapper { position:relative; }
+        .track-wrapper .track-item,
+        .track-wrapper .track-gradient-layer { animation:cardMaterialize 0.7s cubic-bezier(0.4,0,0.2,1) both; }
+        .track-wrapper:nth-child(1) .track-item, .track-wrapper:nth-child(1) .track-gradient-layer { animation:cardMaterialize 1.3s cubic-bezier(0.16,1,0.3,1) 0.3s both; }
+        .track-wrapper:nth-child(2) .track-item, .track-wrapper:nth-child(2) .track-gradient-layer { animation-delay:0.3s }
+        .track-wrapper:nth-child(3) .track-item, .track-wrapper:nth-child(3) .track-gradient-layer { animation-delay:0.45s }
+        .track-wrapper:nth-child(4) .track-item, .track-wrapper:nth-child(4) .track-gradient-layer { animation-delay:0.6s }
 
         .track-name-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
         .track-badge { display:inline-block; width:fit-content; font-size:0.55em; font-weight:500; letter-spacing:2px; text-transform:uppercase; padding:3px 9px; border-radius:6px; background:rgba(100, 155, 25, 0.22); border:1px solid rgba(140, 200, 45, 0.4); color:rgba(185, 230, 100, 0.9); white-space:nowrap; }
 
-        .track-gradient-layer { position:absolute; top:-15px;left:-15px;right:-15px;bottom:-15px; border-radius:30px; z-index:1; transition:all 0.5s cubic-bezier(0.4,0,0.2,1); }
+        .track-gradient-layer { position:absolute; top:-15px;left:-15px;right:-15px;bottom:-15px; border-radius:30px; z-index:1; transition:top 0.5s cubic-bezier(0.4,0,0.2,1),left 0.5s cubic-bezier(0.4,0,0.2,1),right 0.5s cubic-bezier(0.4,0,0.2,1),bottom 0.5s cubic-bezier(0.4,0,0.2,1),box-shadow 0.5s cubic-bezier(0.4,0,0.2,1); }
         .track-wrapper[data-accent="1"] .track-gradient-layer { background:linear-gradient(135deg,var(--track-1-layer) 0%,rgba(20,8,2,0.25) 50%,transparent 100%); box-shadow:0 10px 40px rgba(20,8,2,0.5),inset 0 1px 0 rgba(255,255,255,0.05); }
         .track-wrapper[data-accent="2"] .track-gradient-layer { background:linear-gradient(135deg,var(--track-2-layer) 0%,rgba(111,65,0,0.15) 50%,transparent 100%); box-shadow:0 10px 40px rgba(111,65,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05); }
         .track-wrapper[data-accent="3"] .track-gradient-layer { background:linear-gradient(135deg,var(--track-3-layer) 0%,rgba(30,78,130,0.15) 50%,transparent 100%); box-shadow:0 10px 40px rgba(30,78,130,0.3),inset 0 1px 0 rgba(255,255,255,0.05); }
@@ -122,7 +147,7 @@
         .track-wrapper[data-accent="4"]:hover .track-gradient-layer { box-shadow:0 15px 60px var(--track-4-glow),inset 0 1px 0 rgba(255,255,255,0.08); }
         .track-wrapper[data-accent="4"] .track-item { background:var(--track-4-bg); }
 
-        .track-item { position:relative; z-index:2; backdrop-filter:blur(40px) saturate(200%); -webkit-backdrop-filter:blur(40px) saturate(200%); border:2px solid rgba(255,255,255,0.08); border-radius:25px; overflow:hidden; transition:all 0.5s cubic-bezier(0.4,0,0.2,1); }
+        .track-item { position:relative; z-index:2; backdrop-filter:blur(40px) saturate(200%); -webkit-backdrop-filter:blur(40px) saturate(200%); border:2px solid rgba(255,255,255,0.08); border-radius:25px; overflow:hidden; transition:transform 0.5s cubic-bezier(0.4,0,0.2,1),border-color 0.5s cubic-bezier(0.4,0,0.2,1),box-shadow 0.5s cubic-bezier(0.4,0,0.2,1); }
         .track-wrapper[data-accent="1"] .track-item { background:var(--track-1-bg); }
         .track-wrapper[data-accent="2"] .track-item { background:var(--track-2-bg); }
         .track-wrapper[data-accent="3"] .track-item { background:var(--track-3-bg); }
@@ -130,6 +155,7 @@
 
         .track-item--flex { display:flex; align-items:center; gap:24px; padding:16px; height:184px; }
         .track-cover { width:152px; height:152px; border-radius:14px; object-fit:cover; flex-shrink:0; box-shadow:0 4px 16px rgba(0,0,0,0.5); }
+        .track-cover-fallback { display:none; width:152px; height:152px; border-radius:14px; flex-shrink:0; box-shadow:0 4px 16px rgba(0,0,0,0.5); background:rgba(255,255,255,0.06); border:2px solid rgba(255,255,255,0.1); align-items:center; justify-content:center; font-size:2.2em; font-weight:700; color:rgba(255,255,255,0.6); letter-spacing:1px; user-select:none; }
         .track-info { flex:1; display:flex; flex-direction:column; justify-content:center; gap:14px; }
         .track-name { font-size:1.35em; font-weight:700; letter-spacing:0.5px; color:#fff; margin-bottom:0; text-shadow:0 2px 12px rgba(0,0,0,0.5); line-height:1.25; }
         .track-stream-icons { display:flex; gap:12px; align-items:center; }
@@ -137,34 +163,23 @@
         .track-stream-icons a:hover { background:rgba(255,255,255,0.13); border-color:rgba(255,255,255,0.25); transform:translateY(-2px); color:#fff; }
         .track-stream-icons a svg { width:22px; height:22px; fill:currentColor; }
 
-        /* КНОПКИ ПЛАТФОРМ */
         .links { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
         .primary-links { margin:60px 0; }
-        .link-btn { display:inline-flex; align-items:center; gap:12px; padding:18px 36px; background:transparent; border:2px solid rgba(255,255,255,0.12); border-radius:60px; color:#c8c8c8; text-decoration:none; transition:all 0.5s cubic-bezier(0.4,0,0.2,1); font-size:1em; font-weight:400; letter-spacing:1.5px; position:relative; overflow:hidden; z-index:1; }
-        .link-btn::before { content:''; position:absolute; bottom:0;left:0;right:0; height:0; z-index:-1; transition:height 0.8s cubic-bezier(0.2,0,0.3,1); }
-        .link-btn::after  { content:''; position:absolute; top:50%;left:50%; width:100%;height:100%; transform:translate(-50%,-50%); opacity:0; z-index:-2; transition:opacity 0.6s ease; }
-        .link-btn:hover::before { height:100%; transition:height 0.8s cubic-bezier(0.2,0,0.3,1) 0.15s; }
-        .link-btn:hover::after  { opacity:1; }
-        .link-btn[data-platform="spotify"]::before { background:linear-gradient(to top,var(--btn-spotify-fill),rgba(61,90,79,0.2)); }
-        .link-btn[data-platform="spotify"]::after  { background:radial-gradient(circle at center,var(--btn-spotify-glow),transparent 70%); }
-        .link-btn[data-platform="spotify"]:hover   { background:var(--btn-spotify-hover); border-color:var(--btn-spotify-bord); transform:translateY(-4px) scale(1.03); box-shadow:0 8px 32px var(--btn-spotify-shad),inset 0 2px 0 rgba(255,255,255,0.1); color:#fff; }
-        .link-btn[data-platform="yandex"]::before  { background:linear-gradient(to top,var(--btn-yandex-fill),rgba(180,120,30,0.2)); }
-        .link-btn[data-platform="yandex"]::after   { background:radial-gradient(circle at center,var(--btn-yandex-glow),transparent 70%); }
-        .link-btn[data-platform="yandex"]:hover    { background:var(--btn-yandex-hover); border-color:var(--btn-yandex-bord); transform:translateY(-4px) scale(1.03); box-shadow:0 8px 32px var(--btn-yandex-shad),inset 0 2px 0 rgba(255,255,255,0.1); color:#fff; }
-        .link-btn[data-platform="vk"]::before      { background:linear-gradient(to top,var(--btn-vk-fill),rgba(30,50,90,0.2)); }
-        .link-btn[data-platform="vk"]::after       { background:radial-gradient(circle at center,var(--btn-vk-glow),transparent 70%); }
-        .link-btn[data-platform="vk"]:hover        { background:var(--btn-vk-hover); border-color:var(--btn-vk-bord); transform:translateY(-4px) scale(1.03); box-shadow:0 8px 32px var(--btn-vk-shad),inset 0 2px 0 rgba(255,255,255,0.1); color:#fff; }
+        .link-btn { display:inline-flex; align-items:center; gap:12px; padding:18px 36px; background:transparent; border:2px solid rgba(255,255,255,0.12); border-radius:60px; color:#c8c8c8; text-decoration:none; transition:all 0.3s ease; font-size:1em; font-weight:400; letter-spacing:1.5px; position:relative; overflow:hidden; z-index:1; }
+        .link-btn[data-platform="spotify"]:hover { background:var(--btn-spotify-hover); border-color:var(--btn-spotify-bord); box-shadow:0 0 22px var(--btn-spotify-glow),0 6px 20px var(--btn-spotify-shad); color:#1DB954; transform:translateY(-3px); }
+        .link-btn[data-platform="yandex"]:hover  { background:var(--btn-yandex-hover);  border-color:var(--btn-yandex-bord);  box-shadow:0 0 22px var(--btn-yandex-glow),0 6px 20px var(--btn-yandex-shad);  color:#ffeaa0; transform:translateY(-3px); }
+        .link-btn[data-platform="vk"]:hover      { background:var(--btn-vk-hover);      border-color:var(--btn-vk-bord);      box-shadow:0 0 22px var(--btn-vk-glow),0 6px 20px var(--btn-vk-shad);      color:#a8c8ff; transform:translateY(-3px); }
         .link-btn svg { width:22px; height:22px; opacity:0.8; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.4)); transition:opacity 0.3s ease; }
         .link-btn:hover svg { opacity:1; }
 
-        /* ФУТЕР */
         footer { text-align:center; padding:60px 20px 80px; color:#5a5a5a; font-size:0.85em; font-weight:300; letter-spacing:1px; position:relative; }
         .copyright { cursor:pointer; display:inline-block; transition:color 0.3s ease; user-select:none; position:relative; z-index:1; }
         .copyright:hover { color:#888; }
         .hidden-socials { max-height:0; overflow:hidden; transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1),opacity 0.4s ease,margin-top 0.5s ease; opacity:0; margin-top:0; }
         .hidden-socials.show { max-height:100px; opacity:1; margin-top:30px; }
+        .hidden-socials.expanded { overflow:visible; }
         .social-links-row { display:flex; gap:20px; justify-content:center; }
-        .social-link { display:flex; align-items:center; justify-content:center; width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); transition:all 0.4s cubic-bezier(0.4,0,0.2,1); position:relative; overflow:hidden; }
+        .social-link { display:flex; align-items:center; justify-content:center; width:50px; height:50px; border-radius:50%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); transition:all 0.4s cubic-bezier(0.4,0,0.2,1); position:relative; will-change:transform; }
         .social-link::before { content:''; position:absolute; inset:0; border-radius:50%; opacity:0; transition:opacity 0.4s ease; }
         .social-link[data-social="twitter"]::before  { background:radial-gradient(circle,rgba(29,161,242,0.3),transparent 70%); }
         .social-link[data-social="telegram"]::before { background:radial-gradient(circle,rgba(0,136,204,0.3),transparent 70%); }
@@ -173,54 +188,76 @@
         .social-link svg { width:24px; height:24px; fill:#c8c8c8; transition:fill 0.3s ease; position:relative; z-index:1; }
         .social-link:hover svg { fill:#fff; }
 
-        .divider { width:60%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); margin:60px auto; }
+        .divider { width:60%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); margin:0 auto; }
 
-        /* АДАПТИВ */
         @media (max-width:768px) {
             h1 { font-size:2.8em; letter-spacing:4px; }
             .subtitle { font-size:1em; }
             .bio-text { font-size:1.1em; }
-            header { padding:60px 20px 40px; }
+            header { padding:70px 20px 50px; }
             .links { flex-direction:column; align-items:stretch; gap:12px; }
             .primary-links { margin:40px 0; }
             .link-btn { justify-content:center; }
+            .tracks { padding:0 12px; }
             .track-item,.track-gradient-layer { border-radius:20px; }
-            .track-item--flex { height:auto; padding:14px; gap:14px; }
-            .track-cover { width:100px; height:100px; }
-            .track-name { font-size:1em; }
-            .track-stream-icons { justify-content:space-between; gap:0; }
-            .track-stream-icons a { width:44px; height:44px; }
-            .track-info { padding-right:0; min-width:0; }
+            .track-item--flex { height:auto; padding:20px 16px; gap:12px; flex-direction:column; align-items:center; text-align:center; }
+            .track-cover { width:150px; height:150px; }
+            .track-cover-fallback { width:150px; height:150px; }
+            .track-name { font-size:1.1em; }
+            .track-name-row { flex-direction:column; align-items:center; gap:0; }
+            .track-name-wrap { display:inline-flex; flex-direction:column; align-items:center; }
+            .track-name-wrap .track-name {
+                background:linear-gradient(to top, rgb(100,220,40) 0%, rgb(100,220,40) 20%, #ffffff 60%) !important;
+                -webkit-background-clip:text !important;
+                -webkit-text-fill-color:transparent !important;
+                background-clip:text !important;
+                text-shadow:none !important;
+                color:transparent !important;
+                margin-bottom:0;
+            }
+            .track-name-wrap .track-badge {
+                margin-top:2px;
+                border-color:rgb(100,220,40) !important;
+                border-width:2px !important;
+                background:rgba(40,100,10,0.25) !important;
+                color:rgb(150,240,70) !important;
+                border-radius:8px !important;
+            }
+            .track-stream-icons { justify-content:center; gap:10px; flex-wrap:wrap; }
+            .track-stream-icons a { width:48px; height:48px; }
+            .track-info { padding-right:0; min-width:0; width:100%; align-items:center; gap:10px; }
             .menu-items { flex-direction:column; gap:24px; }
             .menu-items a { font-size:1.3em; }
+            .menu-items a.no-underline { font-size:1.95em; }
+            .submenu-link.submenu-link { font-size:0.93em; }
+            .menu-item-with-sub { margin-bottom:14px; }
         }
     </style>
 </head>
 <body>
+    <div class="glow-orb glow-orb-1" id="orb1"></div>
+    <div class="glow-orb glow-orb-2" id="orb2"></div>
     <button class="lang-btn" id="langBtn" onclick="switchLanguage()">EN</button>
     <div class="menu-btn" id="menuBtn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
     <nav class="menu" id="mainMenu">
         <ul class="menu-items">
-            <li><a href="#" class="active" data-ru="Музыка" data-en="Music">Музыка</a></li>
-            <li class="menu-item-soon">
-                <a href="#" class="soon-link" data-ru="Обо мне" data-en="About" onclick="shakeSoon(this);return false;">Обо мне</a>
-                <span class="soon-tag" data-ru="скоро" data-en="soon">скоро</span>
+            <li><a href="index.html" class="active" data-ru="Музыка" data-en="Music">Музыка</a></li>
+            <li class="menu-item-with-sub menu-item-soon">
+                <a href="#" class="no-underline soon-link" id="homeLink" data-ru="Главная" data-en="Home" onclick="return false;">
+                    <span class="warren-glow" id="warrenGlow"></span>Главная
+                </a>
+                <a href="../warren/index.html" class="submenu-link warren-link" id="warrenLink" data-ru="Дебри" data-en="Warren">Дебри</a>
             </li>
-            <li class="menu-item-soon">
-                <a href="#" class="soon-link" data-ru="Галерея" data-en="Gallery" onclick="shakeSoon(this);return false;">Галерея</a>
-                <span class="soon-tag" data-ru="скоро" data-en="soon">скоро</span>
-            </li>
+            <li><a href="../gallery/index.html" data-ru="Галерея" data-en="Gallery">Галерея</a></li>
         </ul>
     </nav>
 
     <div class="container">
         <header>
             <h1>Slava_Gusak</h1>
-            <p class="subtitle" data-ru="В поисках своего звучания" data-en="Searching for my sound">В поисках своего звучания</p>
+            <p class="subtitle" data-ru="Музыка" data-en="Music">Музыка</p>
         </header>
-
-        <p class="bio-text" data-ru="Играю в игры, пишу музыку... Что ещё надо для счастья?" data-en="Playing games, making music... What else do you need for happiness?">Играю в игры, пишу музыку... Что ещё надо для счастья?</p>
 
         <div class="divider"></div>
 
@@ -235,13 +272,19 @@
             <div class="track-wrapper" data-accent="4">
                 <div class="track-gradient-layer"></div>
                 <div class="track-item track-item--flex">
-                    <img class="track-cover" src="img/ftl.avif" alt="First to Last cover" loading="lazy">
+                    <img class="track-cover" src="img/ftl.avif" alt="First to Last cover" width="152" height="152" fetchpriority="high" onerror="coverFail(this)">
+                    <div class="track-cover-fallback" aria-hidden="true">:)</div>
                     <div class="track-info">
                         <div class="track-name-row">
-                            <p class="track-name">First to Last</p>
-                            <span class="track-badge" data-ru="Альбом" data-en="Album">Альбом</span>
+                            <div class="track-name-wrap">
+                                <p class="track-name">First to Last</p>
+                                <span class="track-badge" data-ru="Альбом" data-en="Album">Альбом</span>
+                            </div>
                         </div>
                         <div class="track-stream-icons">
+                            <a href="https://open.spotify.com/album/7rnYvgyr5hEJF9lvlfPfy3?si=GNhJKwxNS3W5MWwa2B2hUA" target="_blank" title="Spotify"><svg><use href="#icon-spotify"/></svg></a>
+                            <a href="https://music.yandex.ru/album/43728196?utm_source=web&utm_medium=copy_link" target="_blank" title="Яндекс Музыка"><svg><use href="#icon-yandex"/></svg></a>
+                            <a href="https://vk.ru/music/album/-2000044553_29044553_16cda0845612ce2147" target="_blank" title="VK Музыка"><svg><use href="#icon-vk"/></svg></a>
                             <a href="https://slava-gusak.bandcamp.com/album/first-to-last" target="_blank" title="Bandcamp"><svg><use href="#icon-bandcamp"/></svg></a>
                         </div>
                     </div>
@@ -251,11 +294,12 @@
             <div class="track-wrapper" data-accent="1">
                 <div class="track-gradient-layer"></div>
                 <div class="track-item track-item--flex">
-                    <img class="track-cover" src="img/eyes.avif" alt="Eyes cover" loading="lazy">
+                    <img class="track-cover" src="img/eyes.avif" alt="Eyes cover" width="152" height="152" loading="lazy" onerror="coverFail(this)">
+                    <div class="track-cover-fallback" aria-hidden="true">&gt;:0</div>
                     <div class="track-info">
                         <p class="track-name">Eyes</p>
                         <div class="track-stream-icons">
-                            <a href="#" target="_blank" title="Spotify"><svg><use href="#icon-spotify"/></svg></a>
+                            <a href="https://open.spotify.com/album/0imkl3KOoSIxhFswnabC36?si=2cUU-yyTTJCRf1hBXmD1WA" target="_blank" title="Spotify"><svg><use href="#icon-spotify"/></svg></a>
                             <a href="https://music.yandex.ru/album/40972141/track/148883525" target="_blank" title="Яндекс Музыка"><svg><use href="#icon-yandex"/></svg></a>
                             <a href="https://vk.com/audio-2001468105_147468105" target="_blank" title="VK Музыка"><svg><use href="#icon-vk"/></svg></a>
                             <a href="https://slava-gusak.bandcamp.com/track/eyes-bandcamp-vers" target="_blank" title="Bandcamp"><svg><use href="#icon-bandcamp"/></svg></a>
@@ -267,7 +311,8 @@
             <div class="track-wrapper" data-accent="2">
                 <div class="track-gradient-layer"></div>
                 <div class="track-item track-item--flex">
-                    <img class="track-cover" src="img/stinf.avif" alt="Somewhere in the Forest cover" loading="lazy">
+                    <img class="track-cover" src="img/stinf.avif" alt="Somewhere in the Forest cover" width="152" height="152" loading="lazy" onerror="coverFail(this)">
+                    <div class="track-cover-fallback" aria-hidden="true">¦^</div>
                     <div class="track-info">
                         <p class="track-name">Somewhere in the Forest</p>
                         <div class="track-stream-icons">
@@ -282,7 +327,8 @@
             <div class="track-wrapper" data-accent="3">
                 <div class="track-gradient-layer"></div>
                 <div class="track-item track-item--flex">
-                    <img class="track-cover" src="img/med.avif" alt="Мёд cover" loading="lazy">
+                    <img class="track-cover" src="img/med.avif" alt="Мёд cover" width="152" height="152" loading="lazy" onerror="coverFail(this)">
+                    <div class="track-cover-fallback" aria-hidden="true">-.-</div>
                     <div class="track-info">
                         <p class="track-name">Мёд</p>
                         <div class="track-stream-icons">
@@ -313,7 +359,7 @@
         </div>
 
         <footer>
-            <p class="copyright" onclick="toggleHiddenSocials()">© 2025 Slava_Gusak</p>
+            <p class="copyright" onclick="toggleHiddenSocials()">© 2026 Slava_Gusak</p>
             <div class="hidden-socials" id="hiddenSocials">
                 <div class="social-links-row">
                     <a href="https://twitter.com/GooseSvyatoslav" class="social-link" data-social="twitter" target="_blank" title="Twitter">
@@ -328,10 +374,94 @@
     </div>
 
     <script>
+        function coverFail(img){img.style.display='none';img.nextElementSibling.style.display='flex';}
+        // Статичные цвета орбов и фона
+        function initOrbs(){
+            const o1=document.getElementById('orb1'),o2=document.getElementById('orb2');
+            document.body.style.background='linear-gradient(135deg,rgb(3,5,20) 0%,rgb(6,9,28) 50%,rgb(2,4,15) 100%)';
+            o1.style.background='rgba(40,65,180,0.28)';
+            o2.style.background='rgba(25,45,130,0.22)';
+            o1.style.opacity='1';
+            o2.style.opacity='1';
+        }
+        initOrbs();
+
         function shakeSoon(el) {
             el.classList.remove('shaking'); void el.offsetWidth; el.classList.add('shaking');
             el.addEventListener('animationend', () => el.classList.remove('shaking'), { once: true });
         }
+
+        /* ДЕБРИ — секретное открытие удержанием */
+        (function initWarren() {
+            const homeLink = document.getElementById('homeLink');
+            const warrenLink = document.getElementById('warrenLink');
+            const glow = document.getElementById('warrenGlow');
+            if (!homeLink || !warrenLink || !glow) return;
+
+            const HOLD_MS = 3000, GROW_MS = 3000;
+            let holdTimer = null, growStart = null, growRaf = null, revealed = false, pressedHome = false, justRevealed = false;
+
+            function resetGlow() {
+                cancelAnimationFrame(growRaf); growRaf = null;
+                homeLink.classList.remove('warren-charging');
+                glow.style.opacity = '0';
+            }
+            function cancelHold() {
+                const wasCharging = homeLink.classList.contains('warren-charging');
+                const wasPending = holdTimer !== null;
+                const wasPressed = pressedHome;
+                const revealedDuringThisPress = justRevealed;
+                pressedHome = false;
+                justRevealed = false;
+                clearTimeout(holdTimer); holdTimer = null;
+                if (revealed) {
+                    // Дебри уже открыты: удержание больше не нужно. Трясти "Главную"
+                    // нужно только на обычный клик — не на отпускание той самой
+                    // кнопки, которым только что завершилось успешное удержание.
+                    if (wasPressed && !revealedDuringThisPress) shakeSoon(homeLink);
+                    return;
+                }
+                resetGlow();
+                if (wasPending || wasCharging) shakeSoon(homeLink);
+            }
+            function growStep(ts) {
+                if (!growStart) growStart = ts;
+                const progress = Math.min((ts - growStart) / GROW_MS, 1);
+                glow.style.opacity = String(progress);
+                if (progress < 1) { growRaf = requestAnimationFrame(growStep); }
+                else {
+                    resetGlow();
+                    justRevealed = true;
+                    revealWarren();
+                }
+            }
+            function startGrow() {
+                growStart = null;
+                homeLink.classList.add('warren-charging');
+                growRaf = requestAnimationFrame(growStep);
+            }
+            function revealWarren() {
+                if (revealed) return;
+                revealed = true;
+                warrenLink.classList.add('revealed');
+                warrenLink.style.pointerEvents = 'auto';
+            }
+            function startHold(e) {
+                if (e.type === 'mousedown' && e.button !== 0) return;
+                pressedHome = true;
+                if (revealed) return; // Дебри уже открыты — таймер зарядки не нужен, но клик всё равно должен трясти
+                holdTimer = setTimeout(startGrow, HOLD_MS);
+            }
+
+            homeLink.addEventListener('mousedown', startHold);
+            homeLink.addEventListener('touchstart', startHold, { passive: true });
+            // Отпускание слушаем на document, а не на самой ссылке — иначе
+            // небольшое смещение курсора за пределы узкой ссылки (mouseleave)
+            // сбрасывало таймер ещё до истечения удержания.
+            document.addEventListener('mouseup', cancelHold);
+            document.addEventListener('touchend', cancelHold);
+            document.addEventListener('touchcancel', cancelHold);
+        })();
         let clickCount = 0, clickTimer = null, currentLang = 'ru';
         const galacticChars = ['ᔑ','ʖ','ᓵ','ᓭ','ᒷ','リ','⊣','⍑','ᒲ','リ','𝙹','!¡','ᑑ','∷','ᓭ','ℸ','⚍','⍊','∴','ℸ','||','⨅'];
         function getRandomGalacticChar() { return galacticChars[Math.floor(Math.random() * galacticChars.length)]; }
@@ -348,8 +478,20 @@
         }
         function toggleHiddenSocials() {
             if (++clickCount === 3) {
-                document.getElementById('hiddenSocials').classList.toggle('show');
+                const el = document.getElementById('hiddenSocials');
+                const opening = !el.classList.contains('show');
+                el.classList.toggle('show');
                 document.body.classList.toggle('gradient-active');
+                if (opening) {
+                    el.addEventListener('transitionend', function onExpand(e) {
+                        if (e.propertyName === 'max-height') {
+                            el.classList.add('expanded');
+                            el.removeEventListener('transitionend', onExpand);
+                        }
+                    });
+                } else {
+                    el.classList.remove('expanded');
+                }
                 clickCount = 0;
             }
             clearTimeout(clickTimer);
